@@ -60,6 +60,7 @@ const BlogPost = () => {
               <div className="content-section" style={{ marginBottom: "30px" }}>
                 <h2 style={{ color: "#32cd32", marginBottom: "15px" }}>{post.title_two}</h2>
                 {post.desc_two && <p style={{ fontSize: "1.1rem" }}>{post.desc_two}</p>}
+                }
               </div>
             )}
 
@@ -67,6 +68,7 @@ const BlogPost = () => {
               <div className="content-section" style={{ marginBottom: "30px" }}>
                 <h2 style={{ color: "#32cd32", marginBottom: "15px" }}>{post.title_three}</h2>
                 {post.desc_three && <p style={{ fontSize: "1.1rem" }}>{post.desc_three}</p>}
+                }
               </div>
             )}
 
