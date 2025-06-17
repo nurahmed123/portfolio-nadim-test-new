@@ -1,10 +1,17 @@
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 const Card = (props) => {
   const [modal, setModal] = useState(false)
+  const navigate = useNavigate()
 
   const toggleModal = () => {
     setModal(!modal)
+  }
+
+  const handleReadMore = () => {
+    // Navigate to individual blog post page
+    navigate(`/blog/${props.id || 1}`)
   }
 
   if (modal) {
@@ -12,6 +19,7 @@ const Card = (props) => {
   } else {
     document.body.classList.remove("active-modal")
   }
+
   return (
     <>
       <div className='box btn_shadow '>
@@ -20,15 +28,28 @@ const Card = (props) => {
         </div>
         <div className='category d_flex'>
           <span onClick={toggleModal}>{props.date}</span>
-          {/* <label>
-            <i className='far fa-heart'></i> {props.date}
-          </label> */}
         </div>
         <div className='title'>
           <h2 onClick={toggleModal}>{props.title_one}</h2>
-          <a href='#popup' className='arrow' onClick={toggleModal}>
-            <i class='fas fa-arrow-right'></i>
-          </a>
+          <div className="card-actions" style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
+            <button 
+              className="btn_shadow" 
+              onClick={handleReadMore}
+              style={{ 
+                padding: "8px 16px", 
+                fontSize: "14px",
+                background: "#32cd32",
+                color: "#000",
+                border: "none",
+                borderRadius: "5px"
+              }}
+            >
+              Read More
+            </button>
+            <a href='#popup' className='arrow' onClick={toggleModal}>
+              <i className='fas fa-arrow-right'></i>
+            </a>
+          </div>
         </div>
       </div>
 
@@ -45,33 +66,33 @@ const Card = (props) => {
               <h1>{props.title_one}</h1>
               <p>{props.desc_one}</p>
 
-              <h1>{props.title_two}</h1>
-              <p>{props.desc_two}</p>
+              {props.title_two && (
+                <>
+                  <h1>{props.title_two}</h1>
+                  <p>{props.desc_two}</p>
+                </>
+              )}
 
-              <h1>{props.title_three}</h1>
-              <p>{props.desc_three}</p>
+              {props.title_three && (
+                <>
+                  <h1>{props.title_three}</h1>
+                  <p>{props.desc_three}</p>
+                </>
+              )}
+
+              <div className="modal-actions" style={{ marginTop: "20px" }}>
+                <button 
+                  className='btn_shadow'
+                  onClick={handleReadMore}
+                  style={{ marginRight: "10px" }}
+                >
+                  Read Full Article <i className='fas fa-external-link-alt'></i>
+                </button>
+              </div>
 
               <button className='close-modal btn_shadow' onClick={toggleModal}>
-                <i class='fas fa-times'></i>
+                <i className='fas fa-times'></i>
               </button>
-
-              {/*---------Leave Message----------  */}
-              {/* <div className='contact mtop'>
-                <h1>Leave a Reply</h1>
-
-                <form className='blog_contact d_flex'>
-                  <div className='left'>
-                    <input type='text' placeholder='Name' />
-                    <input type='email' placeholder='Email' />
-                    <input type='text' placeholder='Website' />
-                    <button className='btn_shadow'>SUBMIT NOW</button>
-                  </div>
-                  <div className='right'>
-                    <textarea cols='30' rows='12' placeholder='Comment'></textarea>
-                  </div>
-                </form>
-              </div> */}
-              {/*---------Leave Message----------  */}
             </div>
           </div>
         </div>

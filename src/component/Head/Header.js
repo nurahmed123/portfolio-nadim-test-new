@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
 import "./header.css";
 
 const Header = ({ toggleMode, darkMode }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const headerRef = useRef(null);
   const menuRef = useRef(null);
+  const location = useLocation();
 
   // Sticky header effect on scroll
   useEffect(() => {
@@ -18,6 +20,11 @@ const Header = ({ toggleMode, darkMode }) => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location]);
 
   // Close mobile menu on outside click, scroll, or ESC key
   useEffect(() => {
@@ -63,14 +70,20 @@ const Header = ({ toggleMode, darkMode }) => {
   };
 
   const navItems = [
-    { id: "home", label: "Home" },
-    { id: "features", label: "Features" },
-    { id: "portfolio", label: "Portfolio" },
-    { id: "resume", label: "Resume" },
-    { id: "skill", label: "Skills" },
-    { id: "blog", label: "Achievements" },
-    { id: "contact", label: "Contact" },
+    { path: "/", label: "Home" },
+    { path: "/about", label: "About" },
+    { path: "/portfolio", label: "Portfolio" },
+    { path: "/resume", label: "Resume" },
+    { path: "/skills", label: "Skills" },
+    { path: "/blog", label: "Achievements" },
+    { path: "/contact", label: "Contact" },
   ];
+
+  const isActiveRoute = (path) => {
+    if (path === "/" && location.pathname === "/") return true;
+    if (path !== "/" && location.pathname.startsWith(path)) return true;
+    return false;
+  };
 
   return (
     <header
@@ -80,17 +93,28 @@ const Header = ({ toggleMode, darkMode }) => {
       <div className="container d_flex">
         {/* Logo/Name */}
         <div className="name-container">
-          <h1 className="sub-title">
-            <span>NADIM</span> SHAHRIAR
-          </h1>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <h1 className="sub-title">
+              <span>NADIM</span> SHAHRIAR
+            </h1>
+          </Link>
         </div>
 
         {/* Desktop Navigation */}
         <nav className="desktop-nav">
           <ul className="link f_flex uppercase">
             {navItems.map((item) => (
-              <li key={item.id}>
-                <a href={`#${item.id}`}>{item.label}</a>
+              <li key={item.path}>
+                <Link 
+                  to={item.path}
+                  className={isActiveRoute(item.path) ? "active" : ""}
+                  style={{ 
+                    color: isActiveRoute(item.path) ? "#32cd32" : "inherit",
+                    textDecoration: "none"
+                  }}
+                >
+                  {item.label}
+                </Link>
               </li>
             ))}
           </ul>
@@ -135,16 +159,20 @@ const Header = ({ toggleMode, darkMode }) => {
 
           <ul className="mobile-nav-list">
             {navItems.map((item, index) => (
-              <li key={item.id}>
-                <a
-                  href={`#${item.id}`}
+              <li key={item.path}>
+                <Link
+                  to={item.path}
                   onClick={() => setMobileMenuOpen(false)}
+                  style={{ 
+                    color: isActiveRoute(item.path) ? "#32cd32" : "inherit",
+                    textDecoration: "none"
+                  }}
                 >
                   <span className="nav-item-number">
                     {String(index + 1).padStart(2, "0")}.
                   </span>
                   <span className="nav-item-label">{item.label}</span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

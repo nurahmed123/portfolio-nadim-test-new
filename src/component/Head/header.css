@@ -103,8 +103,14 @@ header.header.active {
   transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.link.f_flex.uppercase li a:hover::before {
+.link.f_flex.uppercase li a:hover::before,
+.link.f_flex.uppercase li a.active::before {
   width: 100%;
+}
+
+.link.f_flex.uppercase li a:hover,
+.link.f_flex.uppercase li a.active {
+  color: var(--primary-color);
 }
 
 /* ===== BUTTON GROUP ===== */
